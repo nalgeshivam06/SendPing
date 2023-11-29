@@ -1,10 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
-import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "./Dndstyle.css";
 import { FaEdit } from "react-icons/fa";
 import { RiDeleteBin5Fill } from "react-icons/ri";
+import SimpleMDE from 'react-simplemde-editor';
+import 'easymde/dist/easymde.min.css'; // Import the styles
+
+
 import { CiTextAlignLeft,CiTextAlignCenter,CiTextAlignRight,CiAlignBottom,CiAlignTop, CiAlignCenterH, CiAlignCenterV} from "react-icons/ci";
 const Dnd = () => {
   const [items, setItems] = useState([
@@ -116,7 +119,16 @@ const Dnd = () => {
         editorContainer.style.display === "none" ? "block" : "none";
     }
   };
+  const [texttest, setTexttest] = useState('');
+  const handleChange = (value) => {
+    setTexttest(value);
 
+    setDroppedItem((prevItems) =>
+      prevItems.map((prevItem) =>
+        prevItem.id === style.id ? { ...prevItem, text: value } : prevItem
+      )
+    );
+  };
   return (
     <>
       <div
@@ -274,62 +286,27 @@ const Dnd = () => {
                     display: "flex",
                     justifyContent: " flex-start",
                     alignItems: "flex-start",
+                    position: "relative",
                   }}
                 >
-                  <FaEdit
+                  {/* <FaEdit
                     onClick={(e) => handleEditor(e)}
                     style={{
                       cursor: "pointer",
                     }}
-                  />
-                  <div dangerouslySetInnerHTML={{ __html: item.text }} />
-                  <div className="quillContainer" ref={quillRef}>
-                    <ReactQuill
-                      value={item.text}
-                      onChange={(value) =>
-                        setDroppedItem((prevItems) =>
-                          prevItems.map((prevItem) =>
-                            prevItem.id === item.id
-                              ? { ...prevItem, text: value }
-                              : prevItem
-                          )
-                        )
-                      }
-                      modules={{
-                        toolbar: [
-                          [{ header: [1, 2, false] }],
-                          [
-                            "bold",
-                            "italic",
-                            "underline",
-                            "strike",
-                            "blockquote",
-                          ],
-                          [
-                            { list: "ordered" },
-                            { list: "bullet" },
-                            { indent: "-1" },
-                            { indent: "+1" },
-                          ],
-                          ["link", "image"],
-                          ["clean"],
-                        ],
-                      }}
-                      formats={[
-                        "header",
-                        "bold",
-                        "italic",
-                        "underline",
-                        "strike",
-                        "blockquote",
-                        "list",
-                        "bullet",
-                        "indent",
-                        "link",
-                        "image",
-                      ]}
-                    />
-                  </div>
+                  /> */}
+                  {/* <div dangerouslySetInnerHTML={{ __html: item.text }} /> */}
+                  <div className="quillContainer" style={
+                   {
+                    position:'absolute',
+                    top:'0',
+                    left:'0'
+
+
+                   }
+                  } >
+                <SimpleMDE  value={item.text} onChange={(value) => handleChange(value)} />
+              </div>
                 </div>
               ) : (
                 <div
@@ -352,6 +329,7 @@ const Dnd = () => {
                     className="btn"
                     style={{
                       width: "5vw",
+                      height:'5vh',
                       textAlign: "center",
                       background: "#6495ED",
                       display: "flex",
@@ -411,6 +389,7 @@ const Dnd = () => {
                       setDroppedItem([...droppedItem]);
                     }}
                   />
+                  <hr />
                   <h4>Font Size</h4>
                   <input
                     type="number"
@@ -431,6 +410,8 @@ const Dnd = () => {
                     name=""
                     id=""
                   />
+                  <hr />
+
                   <h4>Dimensions</h4>
                   <div>
                     <label>Width:</label>
@@ -475,6 +456,8 @@ const Dnd = () => {
                       setDroppedItem([...droppedItem]);
                     }}
                   />
+                  <hr />
+
                   <h4>Dimensions</h4>
                   <div>
                     <label>Width:</label>
@@ -503,6 +486,7 @@ const Dnd = () => {
                     />
                   </div>
                 </div>
+                
               )}
 
               {style.id.split(" ", 2)[1] === "Button" && (
@@ -516,6 +500,8 @@ const Dnd = () => {
                       setDroppedItem([...droppedItem]);
                     }}
                   />
+                  <hr />
+
                   <h4>Background Color</h4>
                   <input
                     type="color"
@@ -525,6 +511,8 @@ const Dnd = () => {
                       setDroppedItem([...droppedItem]);
                     }}
                   />
+                  <hr />
+
                   <h4>Text Color</h4>
                   <input
                     type="color"
@@ -534,6 +522,7 @@ const Dnd = () => {
                       setDroppedItem([...droppedItem]);
                     }}
                   />
+                  
                   <h4>Font Size</h4>
                   <input
                     type="number"
@@ -545,6 +534,8 @@ const Dnd = () => {
                       setDroppedItem([...droppedItem]);
                     }}
                   />
+                  <hr />
+
                   <h4>Dimensions</h4>
                   <div>
                     <label>Width:</label>
@@ -608,6 +599,8 @@ const Dnd = () => {
                     <option value="center">Middle</option>
                     <option value="flex-end">Bottom</option>
                   </select> */}
+                  <hr />
+
                   <h4 style={{
                     textAlign: "center",
                   }}>Horizontal</h4>

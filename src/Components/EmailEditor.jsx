@@ -549,6 +549,7 @@ const Dnd = () => {
                         setDroppedItem([...droppedItem]);
                       }}
                     />
+                    
                   </div>
                   <div>
                     <label>Height:</label>

@@ -16,19 +16,21 @@ import {
   CiAlignCenterH,
   CiAlignCenterV,
 } from "react-icons/ci";
+import PreviewScreen from "./PreviewScreen";
+import { useNavigate } from "react-router-dom";
 const EmailEditor = () => {
   const [items, setItems] = useState([
     { id: 1, name: "img" },
     { id: 2, name: "text" },
     { id: 3, name: "button" },
   ]);
-
+const [showPreview, setShowPreview] = useState(false);
   const [droppedItem, setDroppedItem] = useState([
     {
-      id: "1 img",
+      id: "pre img",
       name: "img",
       file: null,
-      key: "1 img",
+      key: "pre1 img",
       style: {
         width: "49vw",
         height: "50vh",
@@ -125,7 +127,7 @@ const EmailEditor = () => {
   const [userImgSrc, setUserImgSrc] = useState("");
   const [quillInstances, setQuillInstances] = useState({});
   const [visibleQuillId, setVisibleQuillId] = useState(null);
-
+  let navigate = useNavigate();
   const [style, setStyle] = useState({
     e: null,
     id: null,
@@ -222,6 +224,9 @@ const EmailEditor = () => {
       )
     );
   };
+  const handlePreview = () => {
+    navigate('/preview', { state: { droppedItems: droppedItem } });
+  }
   const toolbarOptions = [
     "bold", // Bold button
     "italic", // Italic button
@@ -236,6 +241,7 @@ const EmailEditor = () => {
 
   return (
     <>
+    
       <div
         className="main"
         style={{
@@ -245,6 +251,7 @@ const EmailEditor = () => {
           overflow: "hidden",
         }}
       >
+        
         <div
           className="draggableItem"
           style={{
@@ -392,14 +399,7 @@ const EmailEditor = () => {
                     position: "relative",
                   }}
                 >
-                  {/* <FaEdit
-                    onClick={(e) => handleEditor(e)}
-                    style={{
-                      cursor: "pointer",
-                    }}
-                  /> */}
-                  {/* <div dangerouslySetInnerHTML={{ __html: item.text }} /> */}
-                  <div
+                    <div
                     className="quillContainer"
                     style={{
                       position: "absolute",
@@ -410,7 +410,7 @@ const EmailEditor = () => {
                     <CKEditor
                       editor={ClassicEditor}
                       data={item.text}
-                      onInit={(editor) => {
+                      onInit={(editor) => { 
                         // You can customize the editor initialization if needed
                       }}
                       config={{
@@ -520,10 +520,13 @@ const EmailEditor = () => {
                     ec_es_email_sender_address
                   </h1>
                 </div>
+                
               )}
             </div>
+            
           ))}
         </div>
+        
         <div
           className="controls"
           style={{
@@ -533,7 +536,8 @@ const EmailEditor = () => {
           }}
         >
           <h1 style={{ textAlign: "center" }}>Styles</h1>
-
+          <button onClick={handlePreview} className="btn bg-red-100">Preview</button>
+         
           {droppedItem && style.id ? (
             <>
               <div

@@ -4,19 +4,117 @@ import "react-quill/dist/quill.snow.css";
 import "./Dndstyle.css";
 import { FaEdit } from "react-icons/fa";
 import { RiDeleteBin5Fill } from "react-icons/ri";
-import SimpleMDE from 'react-simplemde-editor';
-import 'easymde/dist/easymde.min.css'; // Import the styles
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
-
-import { CiTextAlignLeft,CiTextAlignCenter,CiTextAlignRight,CiAlignBottom,CiAlignTop, CiAlignCenterH, CiAlignCenterV} from "react-icons/ci";
-const Dnd = () => {
+import {
+  CiTextAlignLeft,
+  CiTextAlignCenter,
+  CiTextAlignRight,
+  CiAlignBottom,
+  CiAlignTop,
+  CiAlignCenterH,
+  CiAlignCenterV,
+} from "react-icons/ci";
+const EmailEditor = () => {
   const [items, setItems] = useState([
     { id: 1, name: "img" },
     { id: 2, name: "text" },
     { id: 3, name: "button" },
   ]);
 
-  const [droppedItem, setDroppedItem] = useState([]);
+  const [droppedItem, setDroppedItem] = useState([
+    {
+      id: "1 img",
+      name: "img",
+      file: null,
+      key: "1 img",
+      style: {
+        width: "49vw",
+        height: "50vh",
+        objectFit: "contain",
+
+        color: "black",
+        borderRadius: "8px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      },
+    },
+    {
+      id: "2 Text",
+      name: "text",
+      text: "Text 1",
+      style: {
+        width: "49vw",
+        height: "50vh",
+
+        borderRadius: "8px",
+        display: "flex",
+        justifyContent: " flex-start",
+        alignItems: "flex-start",
+        position: "relative",
+      },
+    },
+    {
+      id: "3 Button",
+      name: "button",
+      style: {
+        width: "49vw",
+        height: "6vh",
+        color: "#fff",
+        borderRadius: "8px",
+
+        display: "flex",
+        cursor: "pointer",
+        justifyContent: "center",
+      },
+    },
+    {
+      id: "itext",
+      name: "itext",
+      style: {
+        width: "49vw",
+        height: "6vh",
+        color: "#fff",
+        borderRadius: "8px",
+
+        border: "2px dashed #87ceeb",
+        display: "flex",
+        cursor: "pointer",
+        justifyContent: "center",
+      },
+    },
+    {
+      id: "icons",
+      name: "icons",
+      style: {
+        width: "49vw",
+        height: "6vh",
+        color: "#fff",
+        borderRadius: "8px",
+        background: "#87ceebd9",
+        display: "flex",
+        cursor: "pointer",
+        justifyContent: "center",
+      },
+    },
+    {
+      id: "itext2",
+      name: "itext",
+      style: {
+        width: "49vw",
+        height: "6vh",
+        color: "#fff",
+        borderRadius: "8px",
+        background: "#87ceebd9",
+
+        display: "flex",
+        cursor: "pointer",
+        justifyContent: "center",
+      },
+    },
+  ]);
   const [editorText, setEditorText] = useState("");
   const [textCounter, setTextCounter] = useState(1);
   const [imageCounter, setImageCounter] = useState(1);
@@ -36,12 +134,13 @@ const Dnd = () => {
   const handleTextChange = (value) => {
     setEditorText(value);
   };
-  useState(() => {
+  useEffect(() => {
     if (style.e && style.id) {
       setStyleit([...styleit, { e: style.e, id: style.id }]);
     }
     imglink && setDroppedItem([...droppedItem, imglink]);
-  });
+  }, []);
+
   const [, imgDrag] = useDrag({
     type: "ITEM",
     item: { id: 1, name: "img" },
@@ -94,6 +193,8 @@ const Dnd = () => {
   const handleSelect = (e, id) => {
     if (e && e.target && id) {
       setStyle({ e: e, id: id });
+    } else if (id) {
+      setStyle({ e: null, id: id });
     } else {
       setStyle({ e: null, id: null });
     }
@@ -111,24 +212,28 @@ const Dnd = () => {
     }
   };
   const quillRef = useRef();
-
-  const handleEditor = (e) => {
-    if (e.target && e.target.parentElement.children[2]) {
-      const editorContainer = e.target.parentElement.children[2];
-      editorContainer.style.display =
-        editorContainer.style.display === "none" ? "block" : "none";
-    }
-  };
-  const [texttest, setTexttest] = useState('');
-  const handleChange = (value) => {
-    setTexttest(value);
-
+  const [iswriting, setisWriting] = useState(true);
+  const handleChange = (event, editor, item) => {
     setDroppedItem((prevItems) =>
       prevItems.map((prevItem) =>
-        prevItem.id === style.id ? { ...prevItem, text: value } : prevItem
+        prevItem.id === item.id
+          ? { ...prevItem, text: editor.getData() }
+          : prevItem
       )
     );
   };
+  const toolbarOptions = [
+    "bold", // Bold button
+    "italic", // Italic button
+    "bulletedList", // Bulleted list button
+    "numberedList", // Numbered list button
+    "alignment", // Alignment button
+    "link", // Link button
+    "fontSize", // Font size button
+    "fontColor", // Font color button
+    "heading", // Heading button
+  ];
+
   return (
     <>
       <div
@@ -170,7 +275,7 @@ const Dnd = () => {
               borderRadius: "8px",
             }}
           >
-           Image 
+            Image
           </div>
           <div
             className="text-container"
@@ -190,7 +295,7 @@ const Dnd = () => {
               borderRadius: "8px",
             }}
           >
-        Text
+            Text
           </div>
           <div
             className="button-container"
@@ -210,7 +315,7 @@ const Dnd = () => {
               borderRadius: "8px",
             }}
           >
-          Button
+            Button
           </div>
         </div>
         <div
@@ -234,13 +339,12 @@ const Dnd = () => {
               {item.name === "img" ? (
                 <div
                   onClick={(e) => handleSelect(e, item.id)}
-                 
                   className="imgDropzone"
                   style={{
                     width: "49vw",
                     height: "50vh",
                     objectFit: "contain",
-                    border: "2px dashed #ff5c5c",
+                    border: style.id === item.id ? "2px dashed #ff5c5c" : "",
                     color: "black",
                     borderRadius: "8px",
                     display: "flex",
@@ -276,12 +380,11 @@ const Dnd = () => {
               ) : item.name === "text" ? (
                 <div
                   onClick={(e) => handleSelect(e, item.id)}
-                 
                   className="textDropzone"
                   style={{
                     width: "49vw",
                     height: "50vh",
-                    border: "2px dashed #4caf50",
+                    border: style.id === item.id ? "2px dashed #4caf50" : "",
                     borderRadius: "8px",
                     display: "flex",
                     justifyContent: " flex-start",
@@ -296,26 +399,38 @@ const Dnd = () => {
                     }}
                   /> */}
                   {/* <div dangerouslySetInnerHTML={{ __html: item.text }} /> */}
-                  <div className="quillContainer" style={
-                   {
-                    position:'absolute',
-                    top:'0',
-                    left:'0'
-
-
-                   }
-                  } >
-                <SimpleMDE  value={item.text} onChange={(value) => handleChange(value)} />
-              </div>
+                  <div
+                    className="quillContainer"
+                    style={{
+                      position: "absolute",
+                      top: "0",
+                      left: "0",
+                    }}
+                  >
+                    <CKEditor
+                      editor={ClassicEditor}
+                      data={item.text}
+                      onInit={(editor) => {
+                        // You can customize the editor initialization if needed
+                      }}
+                      config={{
+                        toolbar: toolbarOptions,
+                      }}
+                      onChange={(event, editor) =>
+                        handleChange(event, editor, item)
+                      }
+                    />
+                  </div>
                 </div>
-              ) : (
+              ) : item.name === "button" ? (
                 <div
                   style={{
                     width: "49vw",
                     height: "6vh",
                     color: "#fff",
                     borderRadius: "8px",
-                    border: "2px dashed #87ceeb",
+                    border: style.id === item.id ? "2px dashed #82ceeb" : "",
+
                     display: "flex",
                     cursor: "pointer",
                     justifyContent: "center",
@@ -323,14 +438,14 @@ const Dnd = () => {
                   }}
                   onClick={(e) => handleSelect(e, item.id)}
                   className="buttonDropzone"
-                 
                 >
                   <div
                     className="btn"
                     style={{
                       width: "5vw",
-                      height:'5vh',
+                      height: "5vh",
                       textAlign: "center",
+
                       background: "#6495ED",
                       display: "flex",
                       justifyContent: "center",
@@ -338,6 +453,72 @@ const Dnd = () => {
                   >
                     Button
                   </div>
+                </div>
+              ) : item.name === "itext" ? (
+                <div
+
+                  className="itext"
+                  id="itext"
+                  style={{
+                    border: style.id === item.id ? "2px dashed #4caf50" : "",
+                  }}
+                  onClick={(e) => handleSelect(e, item.id)}
+                >
+                  <h1>
+                    © Copyright,current_year, ec_es_email_sender_company 
+                    ec_es_email_sender_address
+                  </h1>
+                </div>
+              ) : item.name === "icons" ? (
+                <div
+                  className="flex gap-2  "
+                  id="icons"
+                  style={{
+                    border: style.id === item.id ? "2px dashed #4caf50" : "",
+                  }}
+                  onClick={(e) => handleSelect(e, item.id)}
+                >
+                  <div className="icon1">
+                    <img
+                      src="https://login.sendpulse.com/img/constructor/social/round/youtube.png"
+                      alt=""
+                    />
+                  </div>
+                  <div
+                    className="icon2"
+                    onClick={(e) => handleSelect(e, item.id)}
+                  >
+                    <img
+                      src="https://login.sendpulse.com/img/constructor/social/round/facebook.png"
+                      alt=""
+                    />
+                  </div>
+                  <div className="icon3">
+                    <img
+                      src="https://login.sendpulse.com/img/constructor/social/round/twitter.png"
+                      alt=""
+                    />
+                  </div>
+                  <div className="icon4">
+                    <img
+                      src="https://login.sendpulse.com/img/constructor/social/round/instagram.png"
+                      alt=""
+                    />
+                  </div>
+                </div>
+              ) : (
+                <div
+                  className="itext2"
+                  id="itext2"
+                  style={{
+                    border: style.id === item.id ? "2px dashed #4caf50" : "",
+                  }}
+                  onClick={(e) => handleSelect(e, item.id)}
+                >
+                  <h1>
+                    © Copyright,current_year, ec_es_email_sender_company 
+                    ec_es_email_sender_address
+                  </h1>
                 </div>
               )}
             </div>
@@ -355,29 +536,41 @@ const Dnd = () => {
 
           {droppedItem && style.id ? (
             <>
-             <div style={{
-              display:'flex',
-             }}>
-             <div className="btnRem" style={{
-              background: "#ff5f5f",
-              color: "white",
-              width: "70%",
-              height: "30",
-              borderRadius: "20px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              cursor: "pointer",
-
-             }} onClick={()=>handleDelete(style.id)}>Remove <RiDeleteBin5Fill/></div>
-             <div className="selectedDiv" style={{
-              background: "rgb(0 144 162)",
-              color: "white",
-              textAlign: "center",
-              borderRadius: "20px",
-              width: "29%",
-             }}>{style.id}</div>
-             </div>
+              <div
+                style={{
+                  display: "flex",
+                }}
+              >
+                <div
+                  className="btnRem"
+                  style={{
+                    background: "#ff5f5f",
+                    color: "white",
+                    width: "70%",
+                    height: "30",
+                    borderRadius: "20px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => handleDelete(style.id)}
+                >
+                  Remove <RiDeleteBin5Fill />
+                </div>
+                <div
+                  className="selectedDiv"
+                  style={{
+                    background: "rgb(0 144 162)",
+                    color: "white",
+                    textAlign: "center",
+                    borderRadius: "20px",
+                    width: "29%",
+                  }}
+                >
+                  {style.id}
+                </div>
+              </div>
               {style.id.split(" ", 2)[1] === "Text" && (
                 <div className="text">
                   <h4>Background Color</h4>
@@ -432,10 +625,7 @@ const Dnd = () => {
                       type="number"
                       minLength={0}
                       maxLength={50}
-                      value={
-                        parseInt(style.e.target.style.height) ||
-                        ""
-                      }
+                      value={parseInt(style.e.target.style.height) || ""}
                       onChange={(e) => {
                         style.e.target.style.height = `${e.target.value}vh`;
                         setDroppedItem([...droppedItem]);
@@ -486,7 +676,6 @@ const Dnd = () => {
                     />
                   </div>
                 </div>
-                
               )}
 
               {style.id.split(" ", 2)[1] === "Button" && (
@@ -522,7 +711,7 @@ const Dnd = () => {
                       setDroppedItem([...droppedItem]);
                     }}
                   />
-                  
+
                   <h4>Font Size</h4>
                   <input
                     type="number"
@@ -549,7 +738,6 @@ const Dnd = () => {
                         setDroppedItem([...droppedItem]);
                       }}
                     />
-                    
                   </div>
                   <div>
                     <label>Height:</label>
@@ -602,9 +790,13 @@ const Dnd = () => {
                   </select> */}
                   <hr />
 
-                  <h4 style={{
-                    textAlign: "center",
-                  }}>Horizontal</h4>
+                  <h4
+                    style={{
+                      textAlign: "center",
+                    }}
+                  >
+                    Horizontal
+                  </h4>
                   <div
                     className="justifyBtn"
                     style={{
@@ -615,13 +807,23 @@ const Dnd = () => {
                       gap: "1rem",
                     }}
                   >
-                    <div onClick={() => elemJustify("flex-start")}><CiTextAlignLeft/></div>
-                    <div onClick={() => elemJustify("center")}><CiTextAlignCenter/></div>
-                    <div onClick={() => elemJustify("flex-end")}><CiTextAlignRight/></div>
+                    <div onClick={() => elemJustify("flex-start")}>
+                      <CiTextAlignLeft />
+                    </div>
+                    <div onClick={() => elemJustify("center")}>
+                      <CiTextAlignCenter />
+                    </div>
+                    <div onClick={() => elemJustify("flex-end")}>
+                      <CiTextAlignRight />
+                    </div>
                   </div>
-                  <h4 style={{
-                    textAlign: "center",
-                  }}>TextAlign</h4>
+                  <h4
+                    style={{
+                      textAlign: "center",
+                    }}
+                  >
+                    TextAlign
+                  </h4>
                   <div
                     className="justifyBtn"
                     style={{
@@ -631,19 +833,70 @@ const Dnd = () => {
                       gap: "1rem",
                     }}
                   >
-                    <div className="justifyBtn" style={{
-                      fontSize: "1.65rem",
-                    }}>
-                      <div onClick={() => alignFunc("flex-start")}><CiAlignTop/></div>
-                      <div onClick={() => alignFunc("center")}><CiAlignCenterV/></div>
-                      <div onClick={() => alignFunc("flex-end")}><CiAlignBottom/></div>
+                    <div
+                      className="justifyBtn"
+                      style={{
+                        fontSize: "1.65rem",
+                      }}
+                    >
+                      <div onClick={() => alignFunc("flex-start")}>
+                        <CiAlignTop />
+                      </div>
+                      <div onClick={() => alignFunc("center")}>
+                        <CiAlignCenterV />
+                      </div>
+                      <div onClick={() => alignFunc("flex-end")}>
+                        <CiAlignBottom />
+                      </div>
                     </div>
                   </div>
                 </div>
               )}
             </>
-          ) : (
-            ""
+          ) :""}
+          {style.id === "itext" && (
+            <div>
+              <h4>Text Content</h4>
+              <input
+                type="text"
+                value={style.e.target.textContent}
+                onChange={(e) => {
+                  style.e.target.textContent = e.target.value;
+                  setDroppedItem([...droppedItem]);
+                }}
+              />
+            </div>
+          )}
+           {style.id === "itext2" && (
+            <div>
+              <h4>Text Content</h4>
+              <input
+                type="text"
+                value={style.e.target.textContent}
+                onChange={(e) => {
+                  style.e.target.textContent = e.target.value;
+                  setDroppedItem([...droppedItem]);
+                }}
+              />
+            </div>
+          )}
+          {style.id === "icons" && (
+            <div>
+              <h4>Dimentions</h4>
+              <div>
+                <label>Width:</label>
+                <input
+                  type="number"
+                  minLength={0}
+                  maxLength={50}
+                  value={parseInt(style.e.target.style.width) || ""}
+                  onChange={(e) => {
+                    style.e.target.style.width = `${e.target.value}vw`;
+                    setDroppedItem([...droppedItem]);
+                  }}
+                />
+              </div>                
+            </div>
           )}
         </div>
       </div>
@@ -651,4 +904,4 @@ const Dnd = () => {
   );
 };
 
-export default Dnd;
+export default EmailEditor;

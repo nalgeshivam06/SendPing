@@ -6,7 +6,7 @@ const PreviewScreen = () => {
   const droppedItems = location.state?.droppedItems || [];
   
   return (
-    <div className="preview-screen flex justify-center items-center flex-col">
+    <div className="preview-screen flex m-0 justify-center items-center flex-col">
       {droppedItems.map((item, index) => {
         const { name, style, file, text, iconSrc } = item;
         const key = `${name}-${index}`;
@@ -33,6 +33,7 @@ const PreviewScreen = () => {
                   )}
                 </div>
               );
+
             case "text":
               return (
                 <div className="textDropzone" style={style} key={key}>

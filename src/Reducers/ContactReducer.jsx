@@ -1,7 +1,7 @@
 // reducers/contactReducer.js
 
 // import { ADD_CONTACT } from '../../Actions/ContactActions';
-import { ADD_CONTACT } from "../actions/ContactActions";
+import { ADD_CONTACT } from "../Actions/ContactActions";
 
 const initialState = {
   contacts: [],

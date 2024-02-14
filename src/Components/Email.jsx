@@ -11,68 +11,74 @@ import WhatsApp from "./WhatsApp";
 import EmailEditor from "./EmailEditor";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { Link } from "react-router-dom";
 const Email = () => {
-  const [showCampaign, setShowCampaign] = useState("email");
+  const [showCampaign, setShowCampaign] = useState("");
   const [showEmailCampaign, setShowEmailCampaign] = useState(true);
   const [showEmailEditor, setShowEmailEditor] = useState(false);
   const [showCam, setShowCam] = useState(false);
 
   return (
     <div className="flex flex-row w-full h-screen">
-      <div className="flex flex-col ml-10 pr-5 -mt-6 border-r-2 mr-4 gap-5 w-[10%] h-full">
-        <div className="flex cursor-pointer mt-20">
-          <SlScreenDesktop className="mt-1 mr-1 text-green-600 text-2xl" />
-          <span className="ml-1 text-lg ">Home</span>
+      {/* <div className="flex flex-col ml-10 pr-5 -mt-6 border-r-2 mr-4 gap-5 w-[20%] h-full"> */}
+      <div className="flex flex-col border-r-2 w-1/5 h-full">
+        <div className="flex cursor-pointer mt-20 p-3 text-lg hover:bg-gray-200 rounded-full">
+          <SlScreenDesktop className="ml-8 text-green-600 text-2xl" />
+          <span className="ml-6 text-xl ">Home</span>
         </div>
-        <div className="flex cursor-pointer">
-          <MdPeopleOutline className="mt-1 mr-1 text-green-600 text-2xl" />
-          <span className="ml-1 text-lg">Contact</span>
-        </div>
+        {/* <div className="flex cursor-pointer p-3 text-lg hover:bg-gray-200 rounded-full">
+          <MdPeopleOutline className="ml-8 text-green-600 text-2xl" />
+          <span className="ml-6 text-xl">Contact</span>
+        </div> */}
+        <Link to="/contact" className="flex cursor-pointer p-3 text-lg hover:bg-gray-200 rounded-full">
+      <MdPeopleOutline className="ml-8 text-green-600 text-2xl" />
+      <span className="ml-6 text-xl">Contact</span>
+    </Link>
         <div
-          className="flex cursor-pointer"
+          className="flex cursor-pointer p-3 text-lg hover:bg-gray-200 rounded-full"
           onClick={() => setShowCam(!showCam)}
         >
-          <BsPersonWorkspace className="mt-1 mr-1 text-green-600 text-2xl" />
-          <span className="ml-1 text-lg">Campaign</span>
+          <BsPersonWorkspace className="ml-8 text-green-600 text-2xl" />
+          <span className="ml-6 text-xl">Campaign</span>
         </div>
         {showCam && (
-          <div className="pl-3 text-sm">
+          <div className="pl-3 text-sm text-center">
             <h2
-              className="mb-2 cursor-pointer "
+              className=" cursor-pointer p-3 text-lg hover:bg-gray-200 rounded-full"
               onClick={() => setShowCampaign("email")}
             >
               Email
             </h2>
             <h2
-              className="mb-2 cursor-pointer"
+              className=" cursor-pointer p-3 text-lg hover:bg-gray-200 rounded-full"
               onClick={() => setShowCampaign("WhatsApp")}
             >
               WhatsApp
             </h2>
             <h2
-              className="mb-2 cursor-pointer"
+              className=" cursor-pointer p-3 text-lg hover:bg-gray-200 rounded-full"
               onClick={() => setShowCampaign("webpush")}
             >
               Web push
             </h2>
           </div>
         )}
-        <div className="flex cursor-pointer">
-          <TbBrandGoogleAnalytics className="mt-1 mr-1 text-green-600 text-2xl" />
-          <span className="ml-1 text-lg">Analytic</span>
+        <div className="flex cursor-pointer p-3 text-lg hover:bg-gray-200 rounded-full">
+          <TbBrandGoogleAnalytics className="ml-8 text-green-600 text-2xl" />
+          <span className="ml-6 text-xl">Analytic</span>
         </div>
-        <div className="flex cursor-pointer">
-          <PiCompassLight className="mt-1 mr-1 text-green-600 text-2xl" />
-          <span className="ml-1 text-lg">Automation</span>
+        <div className="flex cursor-pointer p-3 text-lg hover:bg-gray-200 rounded-full">
+          <PiCompassLight className="ml-8 text-green-600 text-2xl" />
+          <span className="ml-6 text-xl">Automation</span>
         </div>
-        <div className="flex cursor-pointer">
-          <PiProjectorScreenChartLight className="mt-1 mr-1 text-green-600 text-2xl" />
-          <span className="ml-1 text-lg">Meeting</span>
-        </div>
-        <div className="flex cursor-pointer">
-          <IoCallSharp className="mt-1 mr-1 text-green-600 text-2xl" />
-          <span className="ml-1 text-lg">Calls</span>
-        </div>
+        <Link to="/meetings" className="flex cursor-pointer p-3 text-lg hover:bg-gray-200 rounded-full">
+          <PiProjectorScreenChartLight className="ml-8 text-green-600 text-2xl" />
+          <span className="ml-6 text-xl">Meeting</span>
+        </Link>
+        <Link to="/calls" className="flex cursor-pointer p-3 text-lg hover:bg-gray-200 rounded-full">
+          <IoCallSharp className="ml-8 text-green-600 text-2xl" />
+          <span className="ml-6 text-xl">Calls</span>
+        </Link>
       </div>
       {showCampaign === "email" && (
         <div className="w-full">

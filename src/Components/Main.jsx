@@ -14,7 +14,7 @@ const messageSettings = [
 export default function Main() {
     return (
         <div>
-            <div className="flex justify-between mx-5 py-2 font-medium">
+            {/* <div className="flex justify-between mx-5 py-2 font-medium">
                 <button className="flex gap-2 bg-[#026b50] py-2 px-2 rounded">
                     <AiOutlineFileExcel className="mt-1" />
                     Upload Excel
@@ -27,7 +27,7 @@ export default function Main() {
                     <AiOutlineDownload className="mt-1" />
                     Download Group
                 </button>
-            </div>
+            </div> 
             <div className="flex gap-1 ml-5 mr-4">
                 <input
                     type="number"
@@ -40,7 +40,7 @@ export default function Main() {
             </div>
             <h2 className="font-semibold text-black flex justify-center mb-6">
                 0 contact(s) found
-            </h2>
+            </h2> */}
             <div className="mx-5 flex justify-between text-sm text-black mb-4">
                 <h2 className="font-semibold">Message Settings</h2>
                 <h2>
@@ -53,16 +53,17 @@ export default function Main() {
                     </a>
                 </h2>
             </div>
-            <div className="mx-5 mb-3">
+            <div className="mx-5 mb-3 ">
                 {messageSettings.map((setting, i) => {
                     return (
                         <div key={i} className="flex gap-5 text-black">
-                            <input
+                            <input 
+                                className=""
                                 type="checkbox"
                                 name="settings"
                                 id={"settings" + i}
                             />
-                            <label htmlFor="settings">{setting.title}</label>
+                            <label htmlFor="settings" className=" text-center">{setting.title}</label>
                         </div>
                     );
                 })}
